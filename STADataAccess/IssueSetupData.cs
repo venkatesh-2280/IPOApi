@@ -135,6 +135,9 @@ namespace IPOApi.STADataAccess
                 parameters.Add(dbManager.CreateParameter("in_offer_code", offerdetail.offer_code, DbType.String));
                 parameters.Add(dbManager.CreateParameter("in_client_code", offerdetail.client_code, DbType.String));
                 parameters.Add(dbManager.CreateParameter("in_user_code", headerval.user_code, DbType.String));
+                parameters.Add(dbManager.CreateParameter("in_ratio_numerator", offerdetail.ratio_numerator, DbType.Int32));
+                parameters.Add(dbManager.CreateParameter("in_ratio_denominator", offerdetail.ratio_denominator, DbType.Int32));
+                parameters.Add(dbManager.CreateParameter("in_record_cutoff_date", offerdetail.record_cutoff_date, DbType.Date));
                 parameters.Add(dbManager.CreateParameter("out_msg", "", DbType.String, ParameterDirection.Output));
                 parameters.Add(dbManager.CreateParameter("out_result", 0, DbType.Int32, ParameterDirection.Output));
                 DataSet ds = dbManager.execStoredProcedure(
