@@ -49,7 +49,7 @@
         public string action { get; set; }
         public int ratio_numerator { get; set; }
         public int ratio_denominator { get; set; }
-        public DateOnly record_cutoff_date { get; set; }
+        public DateOnly? record_cutoff_date { get; set; }
     }
 
     public class OfferBankerModel
