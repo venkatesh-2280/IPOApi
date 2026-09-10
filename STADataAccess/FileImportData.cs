@@ -81,5 +81,25 @@ namespace IPOApi.STADataAccess
             return ds;
         }
 
+        public DataSet getdatasetTotalData(string ipocodes, string constring)
+        {
+            try
+            {
+                constring1 = constring;
+                DBManager dbManager = new DBManager(constring);
+                Dictionary<string, Object> values = new Dictionary<string, object>();
+                MySqlDataAccess con = new MySqlDataAccess("");
+                parameters = new List<IDbDataParameter>();
+                parameters.Add(dbManager.CreateParameter("in_reference_no", ipocodes, DbType.String));
+                ds = dbManager.execStoredProcedure("pr_get_benpos_total", CommandType.StoredProcedure, parameters.ToArray());
+            }
+            catch (Exception ex)
+            {
+                CommonHeader objlog = new CommonHeader();
+                objlog.logger("SP:pr_get_benpos_total" + " Error Message:" + ex.Message);
+            }
+            return ds;
+        }
+
     }
 }
