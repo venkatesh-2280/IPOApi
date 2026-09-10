@@ -136,6 +136,70 @@ namespace IPOApi.Controllers
             }
         }
 
+        [HttpPost("InsRightsEntitlement")]
+        public IActionResult InsRightsEntitlement(string offer_code)
+        {
+            constring = _configuration
+                .GetSection("Appsettings")["ConnectionStrings"]
+                .ToString();
+
+            try
+            {
+                DataTable response = RejectionService
+            .InsertRightsEntitlement(offer_code, constring);
+
+                string result = "";
+
+                if (response != null &&
+                    response.Rows.Count > 0 &&
+                    response.Columns.Contains("result"))
+                {
+                    result = response.Rows[0]["result"].ToString();
+                }
+
+                return Ok(new
+                {
+                    result = result
+                });
+            }
+            catch (Exception e)
+            {
+                return Problem(title: e.Message);
+            }
+        }
+
+        [HttpGet("GetRightsEntitlement")]
+        public IActionResult GetRightsEntitlement(string offer_code)
+        {
+            constring = _configuration
+                .GetSection("Appsettings")["ConnectionStrings"]
+                .ToString();
+
+            try
+            {
+                DataSet ds = RejectionService.GetRightsEntitlement(
+                    offer_code,
+                    constring
+                );
+
+                var result = new
+                {
+                    summary = ds.Tables[0].AsEnumerable()
+                        .Select(row => row.ItemArray)
+                        .ToList(),
+
+                    details = ds.Tables[1].AsEnumerable()
+                        .Select(row => row.ItemArray)
+                        .ToList()
+                };
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Problem(title: e.Message);
+            }
+        }
 
     }
 }
