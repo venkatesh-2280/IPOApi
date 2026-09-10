@@ -70,5 +70,22 @@ namespace IPOApi.Controllers
             }
         }
 
+        [HttpGet("gettotal")]
+        public IActionResult gettotal(string ipocodes)
+        {
+            constring = _configuration.GetSection("Appsettings")["ConnectionStrings"].ToString();
+            DataSet response = new DataSet();
+            try
+            {
+                response = objData.getdatasetTotalData(ipocodes, constring);
+                var serializedProduct = JsonConvert.SerializeObject(response, Formatting.None);
+                return Ok(serializedProduct);
+            }
+            catch (Exception e)
+            {
+                return Problem(title: e.Message);
+            }
+        }
+
     }
 }
