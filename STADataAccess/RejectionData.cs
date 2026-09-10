@@ -159,6 +159,95 @@ namespace IPOApi.STADataAccess
             return ds;
         }
 
+        public DataTable InsertRightsEntitlement(
+    string offer_code,
+    string constring)
+        {
+            DataTable result = new DataTable();
 
+            try
+            {
+                DBManager dbManager = new DBManager(constring);
+
+                List<IDbDataParameter> parameters = new List<IDbDataParameter>();
+
+                parameters.Add(dbManager.CreateParameter("in_offer_code",offer_code,DbType.String));
+                parameters.Add(dbManager.CreateParameter("in_depos_type", "",DbType.String));
+
+                DataSet ds = dbManager.execStoredProcedure(
+                    "pr_ins_rightsentitlement",
+                    CommandType.StoredProcedure,
+                    parameters.ToArray()
+                );
+
+                if (ds != null &&
+                    ds.Tables.Count > 0 &&
+                    ds.Tables[0].Rows.Count > 0)
+                {
+                    result = ds.Tables[0];
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                CommonHeader objlog = new CommonHeader();
+
+                objlog.logger(
+                    "SP:pr_ins_rightsentitlement Error Message:"
+                    + ex.Message
+                );
+
+                throw;
+            }
+        }
+
+        public DataSet GetRightsEntitlement(
+    string offer_code,
+    string constring)
+        {
+            try
+            {
+                DBManager dbManager =
+                    new DBManager(constring);
+
+                parameters =
+                    new List<IDbDataParameter>();
+
+                parameters.Add(
+                    dbManager.CreateParameter(
+                        "in_offer_code",
+                        offer_code,
+                        DbType.String
+                    )
+                );
+
+                DataSet ds =
+                    dbManager.execStoredProcedure(
+                        "pr_get_rightsentitlement",
+                        CommandType.StoredProcedure,
+                        parameters.ToArray()
+                    );
+
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    return ds;
+                }
+
+                return new DataSet();
+            }
+            catch (Exception ex)
+            {
+                CommonHeader objlog =
+                    new CommonHeader();
+
+                objlog.logger(
+                    "SP:pr_get_rightsentitlement Error Message:"
+                    + ex.Message
+                );
+
+                throw;
+            }
+        }
     }
 }

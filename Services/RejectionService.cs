@@ -101,5 +101,45 @@ namespace IPOApi.Services
             }
             return ds;
         }
+
+        public static DataTable InsertRightsEntitlement(
+    string offer_code,
+    string constring)
+        {
+            try
+            {
+                RejectionData objDS =
+                    new RejectionData();
+
+                return objDS.InsertRightsEntitlement(
+                    offer_code,
+                    constring
+                );
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public static DataSet GetRightsEntitlement(
+    string offer_code,
+    string constring)
+        {
+            try
+            {
+                RejectionData objDS =
+                    new RejectionData();
+
+                return objDS.GetRightsEntitlement(
+                    offer_code,
+                    constring
+                );
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
     }
 }
