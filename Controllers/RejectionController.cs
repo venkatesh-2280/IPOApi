@@ -190,6 +190,10 @@ namespace IPOApi.Controllers
 
                     details = ds.Tables[1].AsEnumerable()
                         .Select(row => row.ItemArray)
+                        .ToList(),
+
+                    disable_flag = ds.Tables[2].AsEnumerable()
+                        .Select(row => row.ItemArray)
                         .ToList()
                 };
 
