@@ -39,13 +39,13 @@ namespace IPOApi.Controllers
         }
 
         [HttpGet("getemailList")]
-        public IActionResult getemailList(string offer_code)
+        public IActionResult getemailList(string offer_code, string in_action)
         {
             DataSet response = new DataSet();
             constring = _configuration.GetSection("Appsettings")["ConnectionStrings"].ToString();
             try
             {
-                response = _service.getemailListService(offer_code, constring);
+                response = _service.getemailListService(offer_code, in_action, constring);
                 var serializedProduct = JsonConvert.SerializeObject(response, Formatting.None);
                 return Ok(serializedProduct);
             }
