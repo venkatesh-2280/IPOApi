@@ -32,7 +32,7 @@ namespace IPOApi.STADataAccess
             }
         }
 
-        public void UpdateEmailStatus(string offerCode,int gid,string status,string errorMessage,string constring)
+        public void UpdateEmailStatus(string offerCode,int gid,string status,string errorMessage,int entlid, string in_action, string constring)
             {
                 try
                 {
@@ -44,7 +44,9 @@ namespace IPOApi.STADataAccess
                     parameters.Add(dbManager.CreateParameter("in_gid", gid, DbType.Int32));
                     parameters.Add(dbManager.CreateParameter("in_status", status, DbType.String));
                     parameters.Add(dbManager.CreateParameter("in_error", errorMessage, DbType.String));
-                    dbManager.execStoredProcedure("pr_update_ipo_email_log",CommandType.StoredProcedure,parameters.ToArray());
+                     parameters.Add(dbManager.CreateParameter("in_entitlement_id", entlid, DbType.Int32));
+                parameters.Add(dbManager.CreateParameter("in_action", in_action, DbType.String));
+                dbManager.execStoredProcedure("pr_update_ipo_email_log",CommandType.StoredProcedure,parameters.ToArray());
                 }
                 catch (Exception ex)
                 {
@@ -54,8 +56,8 @@ namespace IPOApi.STADataAccess
         }
 
         //getemailListData
-        public DataSet getemailListData(string offer_code, string constring)
-        {
+        public DataSet getemailListData(string offer_code, string in_action,string constring)
+            {
             try
             {
                 DBManager dbManager = new DBManager(constring);
@@ -63,6 +65,7 @@ namespace IPOApi.STADataAccess
                 MySqlDataAccess con = new MySqlDataAccess("");
                 parameters = new List<IDbDataParameter>();
                 parameters.Add(dbManager.CreateParameter("in_refernce_no", offer_code, DbType.String));
+                parameters.Add(dbManager.CreateParameter("in_action", in_action, DbType.String));
                 ds = dbManager.execStoredProcedure("pr_ipo_get_emaillist", CommandType.StoredProcedure, parameters.ToArray());
                 return ds;
             }

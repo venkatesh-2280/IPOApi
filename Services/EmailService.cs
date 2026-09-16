@@ -40,11 +40,11 @@ namespace IPOApi.Services
                 try
                 {
                     await SendMail(row);
-                    _emailData.UpdateEmailStatus(offerCode,gid, "Y", "",constring);
+                    _emailData.UpdateEmailStatus(offerCode,gid, "Y", "",0,"",constring);
                 }
                 catch (Exception ex)
                 {
-                    _emailData.UpdateEmailStatus( offerCode, gid,  "N", ex.Message, constring);
+                    _emailData.UpdateEmailStatus( offerCode, gid,  "N", ex.Message,0,"",constring);
                 }
             }
             return "Emails Processed Successfully";
@@ -181,13 +181,33 @@ namespace IPOApi.Services
         }
 
         // getemailListService
-        public DataSet getemailListService(string offer_code, string constring)
+        public DataSet getemailListService(string offer_code, string in_action, string constring)
         {
             DataSet ds = new DataSet();
             try
             {
                 EmailData objDS = new EmailData();
-                ds = objDS.getemailListData(offer_code, constring);
+                ds = objDS.getemailListData(offer_code, in_action, constring);
+                if (ds != null &&
+                    ds.Tables.Count > 0 &&
+                    ds.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow row in ds.Tables[0].Rows)
+                            {
+                                int gid = Convert.ToInt32(row["email_log_gid"]);
+                                int entlid = Convert.ToInt32(row["entitlement_id"]);
+
+                                // Call UpdateEmailStatus
+                                objDS.UpdateEmailStatus(
+                                    offer_code,
+                                    gid,
+                                    "Y",
+                                    "",
+                                   entlid,
+                                    in_action,
+                                    constring);
+                            }
+                        }
             }
             catch (Exception e)
             { }
